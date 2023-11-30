@@ -30,6 +30,11 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+
+    avatarURL: {
+      type: String,
+      required: false,
+    },
   },
   { virsionKey: false, timestamps: true }
 );
@@ -57,7 +62,7 @@ const loginSchema = Joi.object({
   }),
 });
 
-const User = model("users", userSchema);
+const User = model("user", userSchema);
 module.exports = {
   User,
   registerSchema,
