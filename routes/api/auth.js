@@ -12,6 +12,7 @@ const {
 const { registerSchema, loginSchema } = require("../../models");
 
 const ctrl = require("../../controllers/auth");
+const { updateAvatarSchema } = require("../../models/user");
 
 router.post(
   "/register",
@@ -28,6 +29,7 @@ router.post("/logout", authenticate, ctrlWrapper(ctrl.logout));
 router.patch(
   "/avatars",
   authenticate,
+  validation(updateAvatarSchema),
   upload.single("avatar"),
   ctrlWrapper(ctrl.updateAvatar)
 );

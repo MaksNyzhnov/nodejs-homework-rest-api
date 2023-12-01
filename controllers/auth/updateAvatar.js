@@ -2,10 +2,15 @@ const { User } = require("../../models");
 const path = require("path");
 const fs = require("fs/promises");
 const jimp = require("jimp");
+const { Unauthorized } = require("http-errors");
 
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {
+  const { avatarURL } = req.body;
+  if (avatarURL) {
+    throw new Unauthorized("missing avatar url");
+  }
   const { path: tempUpload, originalname } = req.file;
   const { _id: id } = req.user;
   const imageName = `${id}_${originalname}`;

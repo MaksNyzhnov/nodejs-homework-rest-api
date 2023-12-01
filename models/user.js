@@ -62,9 +62,16 @@ const loginSchema = Joi.object({
   }),
 });
 
+const updateAvatarSchema = Joi.object({
+  avatarURL: Joi.string().required().messages({
+    "any.required": `Missing required avatar url`,
+  }),
+});
+
 const User = model("user", userSchema);
 module.exports = {
   User,
   registerSchema,
   loginSchema,
+  updateAvatarSchema,
 };
