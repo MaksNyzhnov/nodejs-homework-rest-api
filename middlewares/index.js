@@ -4,6 +4,7 @@ const handleErrors = require("./validationErrors");
 const isValidId = require("./isValidId");
 const authenticate = require("./authenticate");
 const upload = require("./upload");
+const sendEmail = require("./sendEmail");
 
 module.exports = {
   validation,
@@ -12,4 +13,5 @@ module.exports = {
   isValidId,
   authenticate,
   upload,
+  sendEmail,
 };
