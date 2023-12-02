@@ -1,19 +1,56 @@
-// const fs = require('fs/promises')
+const { Schema, model } = require("mongoose");
+const { handleErrors } = require("../middlewares");
+const joi = require("joi");
 
-const listContacts = async () => {}
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      minlength: 2,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, "Set email for contact"],
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
 
-const getContactById = async (contactId) => {}
+contactSchema.post("save", handleErrors);
 
-const removeContact = async (contactId) => {}
+const joiSchema = joi.object({
+  name: joi.string().min(2).required().messages({
+    "any.required": `Missing required name field`,
+  }),
+  email: joi.string().email().required().messages({
+    "any.required": `Missing required email field`,
+  }),
+  phone: joi.string().required().messages({
+    "any.required": `Missing required phone field`,
+  }),
+  favorite: joi.bool(),
+});
 
-const addContact = async (body) => {}
+const favoriteJoiSchema = joi.object({
+  favorite: joi.bool().required().messages({
+    "any.required": `Missing required bool field`,
+  }),
+});
 
-const updateContact = async (contactId, body) => {}
+const Contact = model("contact", contactSchema);
 
-module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-}
+module.exports = { Contact, joiSchema, favoriteJoiSchema };
